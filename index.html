@@ -2,27 +2,17 @@
 <html lang="en">
 
 <head>
-  <title>Form Template</title>
+  <title>Looping Forms</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/forms.css">
-  <style>
-    #output {
-      border-radius: 5px;
-      min-height: 40px;
-      border: 1px solid black;
-      width: 50%;
-      margin: auto;
-      font-size: x-large;
-    }
-  </style>
 </head>
 
 <body>
   <header>
-    <h1 class="page-header">Title Case</h1>
+    <h1 class="page-header">Looping Form</h1>
     <nav class="topnav" id="myTopnav">
       <a href="index.html" class="active">Home</a>
       <a href="#">Link</a>
@@ -33,20 +23,58 @@
 
   <main class="wrapper">
 
-    <h2 class="subheader">Place form code below:</h2>
-    <div id="output"></div>
-    <form method="get" action="" class="main-form">
-      <div>
-        <label for="input">Input</label><br>
-        <input type="text" name="input" id="input" placeholder="Input" required autofocus>
-      </div>
-      <input type="submit" id="submit">
-      </div>
-    </form>
-    <h3>Page Origins</h3>
+    <h2 class="subheader">Add your shiping info below</h2>
+    <div id="output">
+      <form method="get" action="" class="main-form">
+        <div>
+          <label for="FirstName">First Name</label><br>
+          <input type="text" name="First_Name" id="FirstName" placeholder="First Name" required autofocus>
+        </div>
+        <div>
+          <label for="LastName">Last Name</label><br>
+          <input type="text" name="Last_Name" id="LastName" placeholder="Last Name" required>
+        </div>
+        <div>
+          <label for="Email">Email</label><br>
+          <input type="email" name="Email" id="Email" placeholder="Email" required>
+        </div>
+        <div>
+          <label for="Address">Address</label><br>
+          <input type="text" name="Address" id="Address" placeholder="Address" required>
+        </div>
+        <div>
+          <div>
+            <label for="City">City</label><br>
+            <input type="text" name="City" id="City" placeholder="City" required>
+          </div>
+          <div>
+            <br><label for="State">State</label><br>
+            <select name="State" id="State" required>
+              <option value="">Please select state</option>
+              <option value="AK">Alaska</option>
+              <option value="FL">Florida</option>
+              <option value="CA">California</option>
+              <option value="WA">Wahington</option>
+            </select>
+          </div>
+          <div>
+            <br><label for="PostalCode">PostalCode</label><br>
+            <input type="text" name=" Postal_Code" id="PostalCode" placeholder="Postal Code" required>
+          </div>
+          <div>
+            <br><label for="Notes">Notes</label><br>
+            <textarea name="Notes" id="Notes" placeholder="Notes" rows="4" cols="36"></textarea>
+          </div>
+          <input type="submit">
+        </div>
+      </form>
+    </div>
     <footer>
+      <p>
+       This page Makes the first letter of everything UpperCase and the rest is LowerCase using title case function
+      </p>
       <p><small>&copy; 2021-<span id="this-year"></span> by
-          Mahad, All Rights Reserved ~
+          Mahad Ali, All Rights Reserved ~
           <a id="html-checker" href="#" target="_blank">Check HTML</a> ~
           <a id="css-checker" href="#" target="_blank">Check CSS</a></small>
       </p>
@@ -54,18 +82,47 @@
   </main>
   <script src="js/main.js"></script>
   <script>
-    function titleCase(str) {
-      return str = str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
-    const mySubmit = document.querySelector("#submit");
-    console.log(mySubmit);
 
-    mySubmit.addEventListener("click", function (ev) {
-      ev.preventDefault();
-      const myInput = document.querySelector("#input");
-      const myOutput = document.querySelector("#output");
-      myOutput.innerHTML = titleCase(myInput.value);
-    });
+
+    function titleCase(str) {
+      str = str.toLowerCase().split(' ');
+      for (var i = 0; i < str.length; i++) {
+        str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+      }
+      return str.join(' ');
+    }
+
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+
+    if (queryString.length > 0) {//form submitted!
+      let myOutput = `<div id="container">`;//will store data for display
+    
+
+      urlParams.forEach(function (value, key) {
+
+        key = key.split("_").join(" ");
+
+        switch (key) {
+
+          case "First Name":
+          case "Last Name":
+          case "Address":
+          case "City":
+            value = titleCase(value);
+        }
+
+        myOutput += `<p>${key}: ${value}</p>`;
+
+      });
+
+      myOutput += `<p><a href="index.html">CLEAR</a></p>`;
+      myOutput += `</div>`;
+
+      document.querySelector("#output").innerHTML = myOutput;
+    }
+
   </script>
 </body>
 
